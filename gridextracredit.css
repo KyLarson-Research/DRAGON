@@ -1,0 +1,31 @@
+/* File Name: gridextracredit.css */
+/*This is practice using the grid type, authored by Kyle Larson 10-13-20*/
+/*License: GPLv3 https://www.gnu.org/licenses/gpl-3.0.en.html*/
+#bodyDiv {
+	display: grid;
+	grid-template-columns: 25px 25px 25px 25px
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+
+;
+	grid-template-rows: 10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+							10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 
+;
+	
+}
