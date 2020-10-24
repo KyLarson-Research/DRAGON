@@ -23,8 +23,12 @@
     // return { row: rowPosition, column: colPosition } ;
 // }
 
-
 const div = document.getElementById('bodyDiv');
+
+function gap(p1, p2){
+	var g = Math.sqrt( Math.pow(p1[0]-p2[0], 2) + Math.pow((p1[1]-p2[1]), 2) );
+	return g;
+}
 
 function gridPrint(str, gridcontainer){
 	for(let i = 0; i<str.length; i++){
@@ -34,17 +38,34 @@ function gridPrint(str, gridcontainer){
 		gridcontainer.appendChild(newDiv);
 	}		
 }
+/*
 //Half space between and half right/left
-function hsbar(p1, p2){
-	var gap = Math.sqrt( Math.pow(p1[0]-p2[0], 2) + Math.pow((p1[1]-p2[1]), 2) );
-	var p3 = [ (p1[0] + 0.5*gap), (p1[1] - 0.5*gap) ];
-	return p3;
+function hsbar(A, B){
+	var g = gap(A,B);
+	D = [0.5*(A[0]-B[0])+B[0], 0.5*(A[1]-B[1])+B[1]];
+	console.log(D);
+	if((A[1]-B[1])!==0){var slope = (A[0]-B[0])/(A[1]-B[1]);}
+	else{ 
+		var C =  [D[0], (D[1]-0.5*g)]; 
+		return C;
+	}
+	ycept = D[1] + D[0]*slope;
+	console.log(ycept);
+	b = -2*D[0]+2*(ycept-D[1])*slope;
+	console.log(b);
+	a = (1+slope*slope);
+	console.log(a);
+	c = D[0]*D[0]+(ycept-D[1])*(ycept-D[1])-0.25*g*g;
+	console.log(c);
+	var C = [ (-b + Math.sqrt(b*b-4*a*c))/(2*a) ];
+	C.push( -slope * C[0] + ycept );
+	return C;
 }
 
-function hsbal(p1, p2){
-	var gap = Math.sqrt( Math.pow(p1[0]-p2[0], 2) + Math.pow((p1[1]-p2[1]), 2) );
-	var p3 = [ (p1[0] + 0.5*gap), (p1[1] + 0.5*gap) ];
-	return p3;
+function hsbal(a, b){
+	var gap = gap(a,b);
+	var c = [ (a[0] + 0.5*gap), (a[1] + 0.5*gap) ];
+	return c;
 }
 
 //splice points in order where jth is an even number
@@ -56,7 +77,60 @@ function spio(jth, pair){
 			pair.splice( 1, 0, hsbal(pair[0], pair[1]) );
 		}
 		return;
+}*/
+//A and B are expected to each be real integer cartesian points of the form A = [Ax, Ay] B = [Bx, By]
+function halfsplitright(A, B){
+	//case I
+	if(A[0]===B[0]){
+		var X = (B[0] - A[0])/2 + A[0];
+		var Y = A[1] - (B[0] - A[0])/2;
+	}
+	//case II
+	if(A[1]===B[1]){
+		var Y = (B[1] - A[1])/2 + A[1];
+		var X = A[0] - (B[1] - A[1])/2;
+	}
+	//case III
+	if(B[1]<A[1]){
+		var X = A[0];
+		var Y = B[1];
+	}
+	//case IV
+	if(B[1]>A[1]){
+		var X = B[0];
+		var Y = A[1];
+	}
+	return [X, Y];
 }
+//A and B are expected to each be real integer cartesian points of the form A = [Ax, Ay] B = [Bx, By]
+function halfsplitleft(A, B){
+	//case I
+	if(A[0]===B[0]){
+		var X = (B[0] - A[0])/2 + A[0];
+		var Y = A[1] + (B[0] - A[0])/2;
+	}
+	//case II
+	if(A[1]===B[1]){
+		var Y = (B[1] - A[1])/2 + A[1];
+		var X = A[0] + (B[1] - A[1])/2;
+	}
+	//case III
+	if(B[1]<A[1]){
+		var X = B[0];
+		var Y = A[1];
+	}
+	//case IV
+	if(B[1]>A[1]){
+		var X = A[0];
+		var Y = B[1];
+	}
+	return [X, Y];
+}
+
+var p1= [-1,1];
+var p2= [1,1];
+var p3= [0,0];
+console.log(halfsplitright(p1, p3));
 /*
 
 pa1 = [p1, p2];
@@ -70,7 +144,7 @@ console.log(pa1);
 // . 0 . 2 . 4 . 6 .    
 
 //start with the first point
-var p1 =[-1, 1];
+/*var p1 =[-1, 1];
 var p2 = [1, 1];
 
 var cd = [p1, p2];
@@ -92,8 +166,8 @@ spio(0, cj);
 //coalesc
 c = [];
 c.push(cg[0], cg[1], cg[2], ch[0], ch[1], ch[2], ci[0], ci[1], ci[2], cj[0], cj[1], cj[2]);
+*/
 
-console.log(c);
 //var degree = 6;
 //{	//s = coordinates.length;
 	//j = 0;
