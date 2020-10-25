@@ -127,10 +127,28 @@ function halfsplitleft(A, B){
 	return [X, Y];
 }
 
+//splice points in order where jth is an even number
+function buildfractal(degree, p1, p2){
+	var currentarray = [p1, p2];
+	var nextarray = currentarray;
+	for(let i=0; i<degree; i++){
+		for(let j=0; j<Math.pow(2, i); j++){
+			if(j%2==0){
+				nextarray.splice(j+1, 0, halfsplitright(currentarray[j], currentarray[j+1]) );
+			}
+			else{
+				nextarray.splice(j+1, 0, halfsplitleft(currentarray[j], currentarray[j+1]) );
+			}
+		}
+		currentarray=nextarray;
+	}
+	return currentarray;
+}
+
 var p1= [-1,1];
 var p2= [1,1];
-var p3= [0,0];
-console.log(halfsplitright(p1, p3));
+console.log(buildfractal(5, p1, p2));
+
 /*
 
 pa1 = [p1, p2];
