@@ -86,9 +86,9 @@ function halfsplitright(Ax, Ay, Bx, By){
 			var X = Ax + (Bx - Ax)/2;
 			var Y = Ay - (Bx - Ax)/2;
 		}
-		else if(Bx>Ax){//ii
-			var X = (Ax-Bx)/2+Bx;
-			var Y = (Ax-Bx)/2+By;
+		else if(Ax>Bx){//ii
+			var X = Bx + (Ax - Bx)/2;
+			var Y = By + (Ax - Bx)/2;
 		}
 		console.log("RCI");
 	}
@@ -103,10 +103,9 @@ function halfsplitright(Ax, Ay, Bx, By){
 			var Y = Ay;
 		}
 		else if(Ax===Bx){//ii
-			var Y = (Ay - By)/2 + By;
-			var X = Bx - (Ay-By)/2;
+			var Y = By + (Ay - By)/2;
+			var X = Bx - (Ay - By)/2;
 		}
-		
 		console.log("RCIII");
 	}
 	//case IV
@@ -119,9 +118,9 @@ function halfsplitright(Ax, Ay, Bx, By){
 			var X = Ax;
 			var Y = By;
 		}
-		else if(Ax===Bx){
-			var Y = (By - Ay)/2 + Ay;
-			var X = Ax - (By - Ay)/2;
+		else if(Ax===Bx){//iii
+			var Y = Ay + (By - Ay)/2;
+			var X = Ax + (By - Ay)/2;
 		}
 		console.log("RCIV");
 	}
@@ -132,12 +131,12 @@ function halfsplitleft(Ax, Ay, Bx, By){
 	//case I
 	if(Ay===By){
 		if(Ax <Bx){//i
-			var X = (Bx - Ax)/2 + Ax;
+			var X = Ax + (Bx - Ax)/2;
 			var Y = Ay + (Bx - Ax)/2;
 		}
 		else if(Ax>Bx){//ii
-			var X = (Ax-Bx)/2 +Bx;
-			var Y = By+(Ax-Bx)/2; 
+			var X = Bx + (Ax-Bx)/2;
+			var Y = By - (Ax-Bx)/2; 
 		}
 		console.log("LCI");
 	}
@@ -152,8 +151,8 @@ function halfsplitleft(Ax, Ay, Bx, By){
 			var Y = By;
 		}
 		else if(Ax===Bx){//ii
-			var Y = (Ay-By)/2 + By;
-			var X = Bx + (Ay-By)/2;
+			var Y = By + (Ay - By)/2;
+			var X = Bx + (Ay - By)/2;
 		}
 		console.log("LCIII");
 	}
@@ -168,8 +167,8 @@ function halfsplitleft(Ax, Ay, Bx, By){
 			var Y = Ay;
 		}
 		if(Ax===Bx){//i
-			var Y = (By - Ay)/2 + Ay;
-			var X = Ax + (By - Ay)/2;
+			var Y = Ay + (By - Ay)/2;
+			var X = Ax - (By - Ay)/2;
 		}
 		console.log("LCIV");
 	}
@@ -179,16 +178,16 @@ function halfsplitleft(Ax, Ay, Bx, By){
 //splice points in order where jth is an even number
 function buildfractal(degree, startarray){
 	var nextarray = [startarray[0], startarray[1]];
-	var inserts = Math.pow(2, degree-1);
-	for(let i=0; i<inserts; i++){
-		for(let j=0; j<i; j++){
+	for(let i=0; i<degree; i++){
+		var spots = Math.pow(2, i);
+		for(let j=0; j<spots; j++){
 			if(j%2===0){
-				nextarray.splice((j*2+1), 0, halfsplitright(nextarray[j*2][0], startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]) );
+				nextarray.splice((j*2+1), 0, halfsplitright(nextarray[j*2][0], startarray[j*2][1], startarray[(j*2)+1][0], startarray[(j*2)+1][1]) );
 				//startarray.push(j);
 				//console.log(startarray[j*2][0],startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]);
 			}
 			else{
-				nextarray.splice((j*2+1), 0, halfsplitleft(startarray[j*2][0], startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]) );
+				nextarray.splice((j*2+1), 0, halfsplitleft(startarray[j*2][0], startarray[j*2][1], startarray[(j*2)+1][0], startarray[(j*2)+1][1]) );
 				//startarray.push(j);
 				//console.log(startarray[j*2][0],startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]);
 			}
@@ -198,32 +197,40 @@ function buildfractal(degree, startarray){
 	return nextarray;
 }
 
-var P1= [-1, 1];
-var P2= [1, 1];
-var array = [P1, P2];
-//console.log(array[0][0], array[1][0]);
-array = buildfractal(5, array);
-array.forEach( function(item, index) {
-	console.log( item);
-});
-/*
-array.splice(1,0, halfsplitright(P1, P2));
-array.splice(1,0, halfsplitright(array[0], array[1]));
-array.splice(3,0, halfsplitleft(array[2], array[3]));
-array.splice(1,0, halfsplitright(array[0], array[1]));
-array.splice(3,0, halfsplitleft(array[2], array[3]));
-array.splice(5,0, halfsplitright(array[4], array[5]));
-array.splice(7,0, halfsplitleft(array[6], array[7]));
-array.splice(1,0, halfsplitright(array[0], array[1]));
-array.splice(3,0, halfsplitleft(array[2], array[3]));
-array.splice(5,0, halfsplitright(array[4], array[5]));
-array.splice(7,0, halfsplitleft(array[6], array[7]));
-array.splice(9,0, halfsplitright(array[8], array[9]));
-array.splice(11,0, halfsplitleft(array[10], array[11]));
-array.splice(13,0, halfsplitright(array[12], array[13]));
-array.splice(15,0, halfsplitleft(array[14], array[15]));
-*/
+function main(){
+	var P1= [-1, 1];
+	var P2= [1, 1];
+	var array = [P1, P2];
+	//console.log(array[0][0], array[1][0]);
+	array = buildfractal(8, array);
+	array.forEach( function(item, index) {
+		console.log( item);
+	});
+	/*
+	array.splice(1,0, halfsplitright(P1[0], P1[1], P2[0], P2[1]));
+	console.log(array);
+	array.splice(1,0, halfsplitright(array[0][0],array[0][1], array[1][0], array[1][1]));
+	console.log(array);
+	array.splice(3,0, halfsplitleft(array[2][0],array[2][1], array[3][0], array[3][1]));
+	array.splice(1,0, halfsplitright(array[0][0],array[0][1], array[1][0], array[1][1]));
+	array.splice(3,0, halfsplitleft(array[2][0],array[2][1], array[3][0], array[3][1]));
+	array.splice(5,0, halfsplitright(array[4][0],array[4][1], array[5][0], array[5][1]));
+	array.splice(7,0, halfsplitleft(array[6][0], array[6][1], array[7][0], array[7][1]));
+	array.splice(1,0, halfsplitright(array[0][0],array[0][1], array[1][0], array[1][1]));
+	array.splice(3,0, halfsplitleft(array[2][0],array[2][1], array[3][0], array[3][1]));
+	array.splice(5,0, halfsplitright(array[4][0],array[4][1], array[5][0], array[5][1]));
+	array.splice(7,0, halfsplitleft(array[6][0], array[6][1], array[7][0], array[7][1]));
+	array.splice(9,0, halfsplitright(array[8][0], array[8][1], array[9][0], array[9][1]));
+	array.splice(11,0, halfsplitleft(array[10][0],array[10][1], array[11][0], array[11][1]));
+	array.splice(13,0, halfsplitright(array[12][0], array[12][1], array[13][0], array[13][1]));
+	array.splice(15,0, halfsplitleft(array[14][0], array[14][1], array[15][0], array[15][1]));
 
+	array.forEach( function(item, index) {
+		console.log( item);
+	});*/
+	return;
+}
+main();
 
 /*for(let i=0; i<array.length; i++){
 	array[i][0]=array[i][0]*2;
