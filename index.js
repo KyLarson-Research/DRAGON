@@ -82,26 +82,47 @@ function spio(jth, pair){
 function halfsplitright(Ax, Ay, Bx, By){
 	//case I
 	if(Ay===By){
-		var X = (Bx - Ax)/2 + Ax;
-		var Y = Ay - (Bx - Ax)/2;
+		if(Ax<Bx){//i
+			var X = Ax + (Bx - Ax)/2;
+			var Y = Ay - (Bx - Ax)/2;
+		}
+		else if(Bx>Ax){//ii
+			var X = (Ax-Bx)/2+Bx;
+			var Y = (Ax-Bx)/2+By;
+		}
 		console.log("RCI");
-	}
-	//case II
-	else if(Ax===Bx){
-		var Y = (By - Ay)/2 + Ay;
-		var X = Ax - (By - Ay)/2;
-		console.log("RCII");
 	}
 	//case III
 	else if(By<Ay){
-		var X = Ax;
-		var Y = By;
+		if(Bx>Ax){//i
+			var X = Ax;
+			var Y = By;
+		}
+		else if(Ax>Bx){//ii
+			var X = Bx;
+			var Y = Ay;
+		}
+		else if(Ax===Bx){//ii
+			var Y = (Ay - By)/2 + By;
+			var X = Bx - (Ay-By)/2;
+		}
+		
 		console.log("RCIII");
 	}
 	//case IV
 	else if(By>Ay){
-		var X = Bx;
-		var Y = Ay;
+		if(Ax<Bx){//i
+			var X = Bx;
+			var Y = Ay;
+		}
+		else if(Ax>Bx){//ii
+			var X = Ax;
+			var Y = By;
+		}
+		else if(Ax===Bx){
+			var Y = (By - Ay)/2 + Ay;
+			var X = Ax - (By - Ay)/2;
+		}
 		console.log("RCIV");
 	}
 	return [X, Y];
@@ -110,50 +131,68 @@ function halfsplitright(Ax, Ay, Bx, By){
 function halfsplitleft(Ax, Ay, Bx, By){
 	//case I
 	if(Ay===By){
-		var X = (Bx - Ax)/2 + Ax;
-		var Y = Ay + (Bx - Ax)/2;
+		if(Ax <Bx){//i
+			var X = (Bx - Ax)/2 + Ax;
+			var Y = Ay + (Bx - Ax)/2;
+		}
+		else if(Ax>Bx){//ii
+			var X = (Ax-Bx)/2 +Bx;
+			var Y = By+(Ax-Bx)/2; 
+		}
 		console.log("LCI");
-	}
-	//case II
-	else if(Ax===Bx){
-		var Y = (By - Ay)/2 + Ay;
-		var X = Ax + (By - Ay)/2;
-		console.log("LCII");
 	}
 	//case III
 	else if(By<Ay){
-		var X = Bx;
-		var Y = Ay;
+		if(Bx>Ax){//i
+			var X = Bx;
+			var Y = Ay;
+		}
+		else if(Bx<Ax){//ii
+			var X = Ax;
+			var Y = By;
+		}
+		else if(Ax===Bx){//ii
+			var Y = (Ay-By)/2 + By;
+			var X = Bx + (Ay-By)/2;
+		}
 		console.log("LCIII");
 	}
 	//case IV
 	else if(By>Ay){
-		var X = Ax;
-		var Y = By;
+		if(Bx>Ax){//i
+			var X = Ax;
+			var Y = By;
+		}
+		else if(Bx<Ax){//ii
+			var X = Bx;
+			var Y = Ay;
+		}
+		if(Ax===Bx){//i
+			var Y = (By - Ay)/2 + Ay;
+			var X = Ax + (By - Ay)/2;
+		}
 		console.log("LCIV");
 	}
 	return [X, Y];
 }
 
 //splice points in order where jth is an even number
-function buildfractal(degree, nextarray){
-	//var nextarray = [p1, p2];
+function buildfractal(degree, startarray){
+	var nextarray = [startarray[0], startarray[1]];
 	var inserts = Math.pow(2, degree-1);
 	for(let i=0; i<inserts; i++){
 		for(let j=0; j<i; j++){
-			
-			
 			if(j%2===0){
-				nextarray.splice((j*2+1),0,halfsplitright(nextarray[j*2][0],nextarray[j*2][1], nextarray[j*2+1][0], nextarray[j*2+1][1]) );
-				//nextarray.push(j);
-				//console.log(nextarray[j*2][0],nextarray[j*2][1], nextarray[j*2+1][0], nextarray[j*2+1][1]);
+				nextarray.splice((j*2+1), 0, halfsplitright(nextarray[j*2][0], startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]) );
+				//startarray.push(j);
+				//console.log(startarray[j*2][0],startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]);
 			}
 			else{
-				nextarray.splice((j*2+1),0,halfsplitleft(nextarray[j*2][0],nextarray[j*2][1], nextarray[j*2+1][0], nextarray[j*2+1][1]) );
-				//nextarray.push(j);
-				//console.log(nextarray[j*2][0],nextarray[j*2][1], nextarray[j*2+1][0], nextarray[j*2+1][1]);
+				nextarray.splice((j*2+1), 0, halfsplitleft(startarray[j*2][0], startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]) );
+				//startarray.push(j);
+				//console.log(startarray[j*2][0],startarray[j*2][1], startarray[j*2+1][0], startarray[j*2+1][1]);
 			}
-			
+			startarray = nextarray;
 		}
 	}
 	return nextarray;
@@ -163,7 +202,10 @@ var P1= [-1, 1];
 var P2= [1, 1];
 var array = [P1, P2];
 //console.log(array[0][0], array[1][0]);
-console.log(buildfractal(5, array));
+array = buildfractal(5, array);
+array.forEach( function(item, index) {
+	console.log( item);
+});
 /*
 array.splice(1,0, halfsplitright(P1, P2));
 array.splice(1,0, halfsplitright(array[0], array[1]));
@@ -190,7 +232,7 @@ array.splice(15,0, halfsplitleft(array[14], array[15]));
 
 
 /*var currentarray = [P1, P2];
-var nextarray = [];
+var startarray = [];
 	for(let k=0; k<currentarray.length; k++){
 		console.log(halfsplitright(currentarray[0], currentarray[1]) );
 	}
