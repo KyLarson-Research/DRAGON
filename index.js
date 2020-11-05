@@ -1,13 +1,8 @@
 // Filename: index.js
-// Author: Kyle Larson, 10-21-20
+// Author: Kyle C. Larson, 10-21-20
 // Purpose: to handle fractal builders and interractivity
 
 const div = document.getElementById('bodyDiv');
-
-function gap(p1, p2){
-	var g = Math.sqrt( Math.pow(p1[0]-p2[0], 2) + Math.pow((p1[1]-p2[1]), 2) );
-	return g;
-}
 
 function gridPrint(str, gridcontainer){
 	for(let i = 0; i<str.length; i++){
@@ -17,46 +12,7 @@ function gridPrint(str, gridcontainer){
 		gridcontainer.appendChild(newDiv);
 	}		
 }
-/*
-//Half space between and half right/left
-function hsbar(A, B){
-	var g = gap(A,B);
-	D = [0.5*(Ax-Bx)+Bx, 0.5*(Ay-By)+By];
-	console.log(D);
-	if((Ay-By)!==0){var slope = (Ax-Bx)/(Ay-By);}
-	else{ 
-		var C =  [D[0], (D[1]-0.5*g)]; 
-		return C;
-	}
-	ycept = D[1] + D[0]*slope;
-	console.log(ycept);
-	b = -2*D[0]+2*(ycept-D[1])*slope;
-	console.log(b);
-	a = (1+slope*slope);
-	console.log(a);
-	c = D[0]*D[0]+(ycept-D[1])*(ycept-D[1])-0.25*g*g;
-	console.log(c);
-	var C = [ (-b + Math.sqrt(b*b-4*a*c))/(2*a) ];
-	C.push( -slope * C[0] + ycept );
-	return C;
-}
 
-function hsbal(a, b){
-	var gap = gap(a,b);
-	var c = [ (Ax + 0.5*gap), (Ay + 0.5*gap) ];
-	return c;
-}
-
-//splice points in order where jth is an even number
-function spio(jth, pair){
-		if((jth/2)%2===0){//even
-			pair.splice( 1, 0, hsbar(pair[0], pair[1]) );
-		}//right left between successive pairs
-		else{
-			pair.splice( 1, 0, hsbal(pair[0], pair[1]) );
-		}
-		return;
-}*/
 //A and B are expected to each be real integer cartesian points of the form A = [Ay, Ay] B = [Bx, By]
 function halfsplitright(Ax, Ay, Bx, By){
 	//case I
